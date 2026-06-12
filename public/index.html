@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Bulk STK Push</title>
+<style>
+body{font-family:Arial;padding:30px;max-width:900px;margin:auto}
+textarea,input,button{width:100%;padding:10px;margin:10px 0}
+#log{white-space:pre-wrap;border:1px solid #ccc;padding:10px}
+</style>
+</head>
+<body>
+<h2>Bulk STK Push</h2>
+<textarea id="numbers" rows="10" placeholder="One phone number per line"></textarea>
+<input id="amount" type="number" placeholder="Amount">
+<input id="reference" placeholder="Reference">
+<button onclick="send()">Send STK Push</button>
+<div id="log"></div>
+
+<script>
+async function send(){
+ const numbers=document.getElementById('numbers').value
+  .split('\n').map(x=>x.trim()).filter(Boolean);
+
+ const res=await fetch('/api/bulk-stk',{
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({
+   numbers,
+   amount:Number(document.getElementById('amount').value),
+   reference:document.getElementById('reference').value
+  })
+ });
+
+ const data=await res.json();
+ document.getElementById('log').textContent=JSON.stringify(data,null,2);
+}
+</script>
+</body>
+</html>
