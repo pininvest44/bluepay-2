@@ -49,7 +49,7 @@ app.post('/api/bulk-stk', async (req, res) => {
       });
     }
 
-    await sleep(2000);
+    await sleep(4000);
   }
 
   res.json({ total: results.length, results });
